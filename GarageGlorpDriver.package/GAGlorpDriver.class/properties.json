@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "GuillermoPolito 5/11/2015 03:45",
+	"super" : "DatabaseDriver",
+	"category" : "GarageGlorpDriver",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"driverManager",
+		"lastResult"
+	],
+	"name" : "GAGlorpDriver",
+	"type" : "normal"
+}
