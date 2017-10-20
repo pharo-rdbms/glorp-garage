@@ -10,6 +10,6 @@ Metacello new
 Metacello new 
 	baseline: 'GarageGlorp';
 	repository: 'filetree://.';
-	load: '${1}'.
+	load.
 Smalltalk snapshot: true andQuit: true.
 "
