@@ -1,0 +1,54 @@
+language: generic
+
+services:
+  - postgresql
+  - mysql
+
+os:
+  - linux
+  - osx
+
+env:
+  matrix:
+    - DB=sqlite3 PHARO_VERSION=50
+    - DB=mysql PHARO_VERSION=50
+    - DB=postgresV2 PHARO_VERSION=50
+    - DB=sqlite3 PHARO_VERSION=61
+    - DB=mysql PHARO_VERSION=61
+    - DB=postgresV2 PHARO_VERSION=61
+    - DB=sqlite3 PHARO_VERSION=70
+    - DB=mysql PHARO_VERSION=70
+    - DB=postgresV2 PHARO_VERSION=70
+
+
+addons:
+  postgresql: "9.4"
+  apt:
+    packages:
+    - libasound2:i386
+    - libz1:i386
+    - libbz2-1.0:i386
+    - libssl1.0.0:i386
+    - libfreetype6:i386
+    - libsqlite3-0:i386
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        export PG_DATA=$(brew --prefix)/var/postgres;
+        rm -rf ${PG_DATA} && initdb ${PG_DATA} -E utf8;
+        pg_ctl -w start -l postgres.log --pgdata ${PG_DATA};
+        createuser -s postgres;
+        cat postgres.log;
+    fi;
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew update > /dev/null && brew install mysql && mysql.server start; fi
+
+install:
+  # We prepare SQLITE, Pharo and garage packages
+  - ln -s /usr/lib/i386-linux-gnu/libsqlite3.so.0 libsqlite3
+  - wget -O - get.pharo.org/${PHARO_VERSION}+vm | bash
+  - ./scripts/install-packages.sh $DB
+
+before_script:
+  - ./scripts/setup.sh $DB
+script:
+  - ./pharo Pharo.image test --no-xterm --fail-on-failure "Glorp.*"
