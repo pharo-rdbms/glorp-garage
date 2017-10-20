@@ -4,7 +4,7 @@ Metacello new
 	repository: 'github://pharo-rdbms/garage';
 	load: '${1}'.
 Metacello new 
-    baseline: 'Garage';
+    baseline: 'Glorp';
     repository: 'github://pharo-rdbms/glorp';
     load.
 Metacello new 
